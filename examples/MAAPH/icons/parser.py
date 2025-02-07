@@ -1,5 +1,6 @@
-import numpy
 import os
+
+import numpy
 
 current_module_path = os.path.dirname(os.path.abspath(__file__))
 data_file_path = os.path.join(current_module_path, './icons.dat')

@@ -1,12 +1,11 @@
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QWidget  # 如有需要，可用于清理子控件
 
 from siui.components.option_card import SiOptionCardLinear, SiOptionCardPlane
 from siui.components.page import SiPage
 from siui.components.titled_widget_group import SiTitledWidgetGroup
 from siui.components.widgets import SiDenseHContainer, SiDenseVContainer, SiLabel, SiPushButton
-from siui.core import SiGlobal
 from siui.core import Si
+from siui.core import SiGlobal
 
 
 class AppMarketPage(SiPage):

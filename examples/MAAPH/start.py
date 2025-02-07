@@ -1,12 +1,11 @@
 import sys
-import time
 
 from PyQt5.QtCore import QTimer
 from PyQt5.QtWidgets import QApplication
+
+from siui.core import SiGlobal
 from ui import MySiliconApp
 
-import siui
-from siui.core import SiGlobal
 
 # siui.gui.set_scale_factor(1)
 
@@ -18,7 +17,7 @@ def show_version_message(window):
              "Click this message box to check out what's new.",
         msg_type=1,
         icon=SiGlobal.siui.iconpack.get("ic_fluent_hand_wave_regular"),
-        fold_after=1000,
+        fold_after=2000,
         slot=lambda: window.LayerRightMessageSidebar().send("Oops, it seems that nothing will happen due to the fact "
                                                             "that this function is currently not completed.",
                                                             icon=SiGlobal.siui.iconpack.get("ic_fluent_info_regular"))

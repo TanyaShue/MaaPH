@@ -1,20 +1,12 @@
-import icons
-from components.page_about import About
-from components.page_container import ExampleContainer
-from components.page_dialog import ExampleDialogs
-from components.page_functional import ExampleFunctional
-from components.page_homepage import ExampleHomepage
-from components.page_icons import ExampleIcons
-from components.page_option_cards import ExampleOptionCards
-from components.page_page_control import ExamplePageControl
-from components.page_refactor import RefactoredWidgets
-from components.page_widgets import ExampleWidgets
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QDesktopWidget
 
+import icons
 import siui
+from components.page_about import About
 from examples.MAAPH.components.page_adb_manager_homepage.adb_manager_homepage import ADBManagerHomepage
 from examples.MAAPH.components.page_appmarket.app_market_page import AppMarketPage
+from examples.MAAPH.components.page_device_info_page.page_device_info_page import ExampleDeviceInfoPage
 from siui.core import SiColor, SiGlobal
 from siui.templates.application.application import SiliconApplication
 
@@ -35,10 +27,22 @@ class MySiliconApp(SiliconApplication):
         self.layerMain().setTitle("MAAPH")
         self.setWindowTitle("MAAPH")
         self.setWindowIcon(QIcon("./img/empty_icon.png"))
-
-        self.layerMain().addPage(ExampleHomepage(self),
+        self.layerMain().addPage(ADBManagerHomepage(self),
                                  icon=SiGlobal.siui.iconpack.get("ic_fluent_home_filled"),
-                                 hint="主页", side="top")
+                                 hint="设备管理", side="top")
+        self.layerMain().addPage(ExampleDeviceInfoPage(self),
+                                 icon=SiGlobal.siui.iconpack.get("ic_fluent_list_bar_filled"),
+                                 hint="选项卡", side="top")
+        self.layerMain().addPage(AppMarketPage(self),
+                                 icon=SiGlobal.siui.iconpack.get("ic_fluent_apps_add_in_filled"),
+                                 hint="应用市场", side="top")
+
+        self.layerMain().addPage(About(self),
+                                 icon=SiGlobal.siui.iconpack.get("ic_fluent_info_filled"),
+                                 hint="关于", side="bottom")
+        # self.layerMain().addPage(ExampleHomepage(self),
+        #                          icon=SiGlobal.siui.iconpack.get("ic_fluent_home_filled"),
+        #                          hint="主页", side="top")
         # self.layerMain().addPage(ExampleIcons(self),
         #                          icon=SiGlobal.siui.iconpack.get("ic_fluent_diversity_filled"),
         #                          hint="图标包", side="top")
@@ -51,9 +55,7 @@ class MySiliconApp(SiliconApplication):
         # self.layerMain().addPage(ExampleContainer(self),
         #                          icon=SiGlobal.siui.iconpack.get("ic_fluent_align_stretch_vertical_filled"),
         #                          hint="容器", side="top")
-        self.layerMain().addPage(ExampleOptionCards(self),
-                                 icon=SiGlobal.siui.iconpack.get("ic_fluent_list_bar_filled"),
-                                 hint="选项卡", side="top")
+
         # self.layerMain().addPage(ExampleDialogs(self),
         #                          icon=SiGlobal.siui.iconpack.get("ic_fluent_panel_separate_window_filled"),
         #                          hint="消息与二级界面", side="top")
@@ -63,16 +65,6 @@ class MySiliconApp(SiliconApplication):
         # self.layerMain().addPage(ExampleFunctional(self),
         #                          icon=SiGlobal.siui.iconpack.get("ic_fluent_puzzle_piece_filled"),
         #                          hint="功能组件", side="top")
-        self.layerMain().addPage(AppMarketPage(self),
-                                 icon=SiGlobal.siui.iconpack.get("ic_fluent_list_bar_filled"),
-                                 hint="应用市场", side="top")
-        self.layerMain().addPage(ADBManagerHomepage(self),
-                                 icon=SiGlobal.siui.iconpack.get("ic_fluent_list_bar_filled"),
-                                 hint="设备管理", side="top")
-        self.layerMain().addPage(About(self),
-                                 icon=SiGlobal.siui.iconpack.get("ic_fluent_info_filled"),
-                                 hint="关于", side="bottom")
-
         self.layerMain().setPage(0)
 
         SiGlobal.siui.reloadAllWindowsStyleSheet()

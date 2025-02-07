@@ -1,29 +1,18 @@
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QFont
 
 from siui.components import SiPixLabel
-from siui.components.option_card import SiOptionCardPlane, SiOptionCardLinear
+# 用于展示 adb 设备的卡片示例
+from siui.components.option_card import SiOptionCardPlane
 from siui.components.page import SiPage
-from siui.components.slider import SiSliderH
 from siui.components.titled_widget_group import SiTitledWidgetGroup
 from siui.components.widgets import (
     SiDenseHContainer,
-    SiDenseVContainer,
-    SiLabel,
-    SiLineEdit,
-    SiLongPressButton,
     SiPushButton,
-    SiSimpleButton,
-    SiSwitch,
 )
-from siui.core import GlobalFont, Si, SiColor, SiGlobal, SiQuickEffect, GlobalFontSize
-from siui.gui import SiFont
-
-
-# 用于展示 adb 设备的卡片示例
-from siui.components.option_card import SiOptionCardPlane
 from siui.components.widgets import SiDenseVContainer, SiLabel, SiSimpleButton
+from siui.core import GlobalFont, SiColor
 from siui.core import SiGlobal
+from siui.gui import SiFont
 
 
 class ADBDeviceCard(SiOptionCardPlane):
@@ -40,25 +29,6 @@ class ADBDeviceCard(SiOptionCardPlane):
         manage_btn = SiSimpleButton(self)
         manage_btn.attachment().setText("Manage")
         self.footer().addWidget(manage_btn, side="right")
-
-
-# 用于展示项目的卡片示例
-class ProjectCard(SiOptionCardPlane):
-    def __init__(self, project_name="New Project", description="", *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.setTitle(project_name)
-        self.setFixedSize(250, 180)
-        # 设置描述信息（例如项目介绍、任务数等）
-        desc_label = SiLabel(self)
-        desc_label.setText(description or "No description available.")
-        desc_label.setStyleSheet("color: {};".format(SiGlobal.siui.colors["TEXT_B"]))
-        desc_label.setWordWrap(True)
-        self.body().addWidget(desc_label, side="top")
-
-        # 添加一个按钮用于进入项目详情或执行任务
-        open_btn = SiSimpleButton(self)
-        open_btn.attachment().setText("Open")
-        self.footer().addWidget(open_btn, side="right")
 
 # 主页面：自动操作 adb 设备、项目和插件的入口
 class ADBManagerHomepage(SiPage):
@@ -83,7 +53,7 @@ class ADBManagerHomepage(SiPage):
         self.title = SiLabel(self.header_area)
         self.title.setGeometry(64, 20, 500, 64)
         self.title.setAlignment(Qt.AlignVCenter | Qt.AlignLeft)
-        self.title.setText("ADB Automation Manager")
+        self.title.setText("MAA Project Helper")
         self.title.setStyleSheet("color: {};".format(SiGlobal.siui.colors["TEXT_A"]))
         self.title.setFont(SiFont.tokenized(GlobalFont.XL_MEDIUM))
 
@@ -107,27 +77,6 @@ class ADBManagerHomepage(SiPage):
         device_card_2 = ADBDeviceCard(device_name="Device 2", status="Connected", parent=self)
         self.devices_container.addWidget(device_card_1)
         self.devices_container.addWidget(device_card_2)
-
-        # # ------------------ 项目展示区域 ------------------
-        # # 用于展示各个项目（可从插件市场中下载加载）
-        # self.projects_container = SiDenseHContainer(self)
-        # self.projects_container.setFixedHeight(200)
-        # self.projects_container.setAlignment(Qt.AlignCenter)
-        # self.projects_container.setSpacing(16)
-        #
-        # # 示例项目卡片
-        # project_card_1 = ProjectCard(
-        #     project_name="Project Alpha",
-        #     description="A sample project for automation tasks.",
-        #     parent=self
-        # )
-        # project_card_2 = ProjectCard(
-        #     project_name="Project Beta",
-        #     description="Another project with dynamic scripts.",
-        #     parent=self
-        # )
-        # self.projects_container.addWidget(project_card_1)
-        # self.projects_container.addWidget(project_card_2)
 
         # ------------------ 底部按钮区域 ------------------
         # 一个简单的按钮区域，例如进入插件市场
