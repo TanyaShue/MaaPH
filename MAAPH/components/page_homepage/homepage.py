@@ -1,5 +1,6 @@
 from PyQt5.QtCore import Qt
 
+from MAAPH.components.page_dialog.components.child_page_example import ChildPageExample
 from siui.components import SiPixLabel
 # 用于展示 adb 设备的卡片示例
 from siui.components.option_card import SiOptionCardPlane
@@ -87,7 +88,11 @@ class Homepage(SiPage):
         add_device_button = SiPushButton(self)
         add_device_button.resize(210, 32)
         add_device_button.attachment().setText("add device")
+        add_device_button.clicked.connect(
+            lambda: SiGlobal.siui.windows["MAIN_WINDOW"].layerChildPage().setChildPage(ChildPageExample(self))
+        )
         self.bottom_area.addWidget(add_device_button)
+
 
         # ------------------ 将各区域添加到滚动容器中 ------------------
         self.scroll_container.addWidget(self.header_area)

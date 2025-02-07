@@ -4,9 +4,9 @@ from PyQt5.QtWidgets import QDesktopWidget
 import icons
 import siui
 from components.page_about import About
-from examples.MAAPH.components.page_homepage.homepage import Homepage
-from examples.MAAPH.components.page_appmarket.app_market_page import AppMarketPage
-from examples.MAAPH.components.page_device_info_page.page_device_info_page import ExampleDeviceInfoPage
+from MAAPH.components.page_homepage.homepage import Homepage
+from MAAPH.components.page_appmarket.app_market_page import AppMarketPage
+from MAAPH.components.page_device_info_page.page_device_info_page import ExampleDeviceInfoPage
 from siui.core import SiColor, SiGlobal
 from siui.templates.application.application import SiliconApplication
 
@@ -26,7 +26,7 @@ class MySiliconApp(SiliconApplication):
         self.move((screen_geo.width() - self.width()) // 2, (screen_geo.height() - self.height()) // 2)
         self.layerMain().setTitle("MAAPH")
         self.setWindowTitle("MAAPH")
-        self.setWindowIcon(QIcon("./img/empty_icon.png"))
+        self.setWindowIcon(QIcon("img/empty_icon.png"))
         self.layerMain().addPage(Homepage(self),
                                  icon=SiGlobal.siui.iconpack.get("ic_fluent_home_filled"),
                                  hint="首页", side="top")
@@ -35,7 +35,7 @@ class MySiliconApp(SiliconApplication):
                                  hint="设备管理", side="top")
         self.layerMain().addPage(AppMarketPage(self),
                                  icon=SiGlobal.siui.iconpack.get("ic_fluent_apps_add_in_filled"),
-                                 hint="应用市场", side="top")
+                                 hint="资源市场", side="top")
 
         self.layerMain().addPage(About(self),
                                  icon=SiGlobal.siui.iconpack.get("ic_fluent_info_filled"),

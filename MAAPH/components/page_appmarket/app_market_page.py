@@ -16,7 +16,7 @@ class AppMarketPage(SiPage):
         self.setPadding(64)
         self.setScrollMaximumWidth(1200)
         self.setScrollAlignment(Qt.AlignLeft)
-        self.setTitle("应用市场")
+        self.setTitle("资源市场")
 
         # 创建整体容器（带标题分组）
         self.titled_widget_group = SiTitledWidgetGroup(self)
@@ -39,7 +39,7 @@ class AppMarketPage(SiPage):
         # 右侧：应用详情容器
         # ----------------------
         self.details_container = SiOptionCardPlane(self)
-        self.details_container.setTitle("应用详情")
+        self.details_container.setTitle("资源详情")
         # 固定详情容器的宽度（可根据实际需求调整）
         self.details_container.setFixedWidth(600)
 
@@ -101,7 +101,7 @@ class AppMarketPage(SiPage):
             detail_button.resize(80, 32)
             detail_button.attachment().setText("详情")
             # 注意：这里使用 lambda 绑定参数 app
-            detail_button.clicked.connect(lambda checked, app=app: self.showAppDetails(app))
+            # detail_button.clicked.connect(lambda checked, app=app: self.showAppDetails(app))
             app_card.addWidget(detail_button)
 
             # 将应用卡片添加到应用列表容器中

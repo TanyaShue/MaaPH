@@ -1,9 +1,10 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton
 
+from PyQt5.QtWidgets import QApplication, QWidget
 from SiliconUI.SiButton import SiButton, SiButtonHoldtoConfirm
-from SiliconUI.SiLayout import SiLayoutV
 from SiliconUI.SiGlobal import colorset
+from SiliconUI.SiLayout import SiLayoutV
+
 
 # 当按钮点击事件触发时
 def when_button_clicked():

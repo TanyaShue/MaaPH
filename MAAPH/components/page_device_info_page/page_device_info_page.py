@@ -1,6 +1,9 @@
 from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QScrollArea
+from siui.components.widgets.scrollarea import SiScrollArea
 
-from examples.MAAPH.components.option_card import OptionCardPlaneForWidgetDemos
+from MAAPH.components.option_card import OptionCardPlaneForWidgetDemos
+from siui.components import SiPushButton
 from siui.components.option_card import SiOptionCardLinear, SiOptionCardPlane
 from siui.components.page import SiPage
 from siui.components.progress_bar import SiProgressBar
@@ -65,6 +68,10 @@ class ExampleDeviceInfoPage(SiPage):
         container_description = SiOptionCardLinear(self)
         container_description.setTitle("设备信息", f"展示 {device_name} 的基本信息")
         container_description.load(SiGlobal.siui.iconpack.get("ic_fluent_slide_layout_regular"))
+        detail_button = SiPushButton(self)
+        detail_button.resize(60, 24)
+        detail_button.attachment().setText("详情")
+        container_description.addWidget(detail_button)
 
         # 资源监视器卡片
         container_resource = SiOptionCardPlane(self)
