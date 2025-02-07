@@ -29,6 +29,9 @@ class ADBDeviceCard(SiOptionCardPlane):
         # 添加一个按钮用于后续的操作（如查看详情、连接、断开）
         manage_btn = SiSimpleButton(self)
         manage_btn.attachment().setText("Manage")
+        manage_btn.clicked.connect(
+            lambda: SiGlobal.siui.windows["MAIN_WINDOW"].layerChildPage().setChildPage(ChildPageExample(self))
+        )
         self.footer().addWidget(manage_btn, side="right")
 
 # 主页面：自动操作 adb 设备、项目和插件的入口
@@ -87,7 +90,7 @@ class Homepage(SiPage):
 
         add_device_button = SiPushButton(self)
         add_device_button.resize(210, 32)
-        add_device_button.attachment().setText("add device")
+        add_device_button.attachment().setText("Add Device")
         add_device_button.clicked.connect(
             lambda: SiGlobal.siui.windows["MAIN_WINDOW"].layerChildPage().setChildPage(ChildPageExample(self))
         )
