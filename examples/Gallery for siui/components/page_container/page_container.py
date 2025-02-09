@@ -224,10 +224,12 @@ class ExampleContainer(SiPage):
                 button.attachment().setText(str(round(random.random(), int(6 * random.random() + 2))))
                 button.colorGroup().assign(SiColor.BUTTON_OFF, button.getColor(SiColor.INTERFACE_BG_D))
                 button.setFixedHeight(32)
+                button.setFixedWidth(100)
                 button.adjustSize()
                 button.setAttribute(Qt.WA_TransparentForMouseEvents)
                 label.button = button
                 label.resize(button.size())
+                label.button.clicked.connect(lambda: print("clicked!"))
                 self.demo_flow_container.addWidget(label, ani=False)
                 self.demo_flow_container.regDraggableWidget(label)
             self.demo_flow_container.adjustSize()

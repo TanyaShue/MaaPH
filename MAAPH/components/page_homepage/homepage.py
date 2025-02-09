@@ -1,6 +1,6 @@
 from PyQt5.QtCore import Qt
 
-from MAAPH.components.page_dialog.components.child_page_example import ChildPageExample
+from MAAPH.components.page_dialog.components.add_device_page import AddDevicePage
 from siui.components import SiPixLabel
 # 用于展示 adb 设备的卡片示例
 from siui.components.option_card import SiOptionCardPlane
@@ -17,10 +17,11 @@ from siui.gui import SiFont
 
 
 class ADBDeviceCard(SiOptionCardPlane):
-    def __init__(self, device_name="Unknown Device", status="Disconnected", *args, **kwargs):
+    def __init__(self, device_name="Unknown Device",config="{}", status="Disconnected", *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.setTitle(device_name)
         self.setFixedSize(250, 150)
+        self.config=config
         # 设置一个简单的描述文本，显示连接状态
         self.body().addWidget(
             SiLabel(self, text=f"Status: {status}"),
@@ -30,7 +31,7 @@ class ADBDeviceCard(SiOptionCardPlane):
         manage_btn = SiSimpleButton(self)
         manage_btn.attachment().setText("Manage")
         manage_btn.clicked.connect(
-            lambda: SiGlobal.siui.windows["MAIN_WINDOW"].layerChildPage().setChildPage(ChildPageExample(self))
+            lambda: SiGlobal.siui.windows["MAIN_WINDOW"].layerChildPage().setChildPage(AddDevicePage(self))
         )
         self.footer().addWidget(manage_btn, side="right")
 
@@ -77,10 +78,10 @@ class Homepage(SiPage):
         self.devices_container.setSpacing(16)
 
         # 示例设备卡片（后续可动态生成）
-        device_card_1 = ADBDeviceCard(device_name="Device 1", status="Connected", parent=self)
-        device_card_2 = ADBDeviceCard(device_name="Device 2", status="Connected", parent=self)
+        device_card_1 = ADBDeviceCard(device_name="Device 1",config="{}", status="Connected", parent=self)
         self.devices_container.addWidget(device_card_1)
-        self.devices_container.addWidget(device_card_2)
+        # device_card_2 = ADBDeviceCard(device_name="Device 2",config="{}", status="Connected", parent=self)
+        # self.devices_container.addWidget(device_card_2)
 
         # ------------------ 底部按钮区域 ------------------
         # 一个简单的按钮区域，例如进入插件市场
@@ -91,9 +92,7 @@ class Homepage(SiPage):
         add_device_button = SiPushButton(self)
         add_device_button.resize(210, 32)
         add_device_button.attachment().setText("Add Device")
-        add_device_button.clicked.connect(
-            lambda: SiGlobal.siui.windows["MAIN_WINDOW"].layerChildPage().setChildPage(ChildPageExample(self))
-        )
+        add_device_button.clicked.connect(self.show_add_device_page)
         self.bottom_area.addWidget(add_device_button)
 
 
@@ -113,3 +112,31 @@ class Homepage(SiPage):
         self.devices_container.setFixedWidth(w)
         self.bottom_area.setFixedWidth(w)
         self.scroll_container.adjustSize()
+
+    def show_add_device_page(self):
+        add_device_page = AddDevicePage() #  不再需要传递 Homepage 实例
+        # 连接 AddDevicePage 的 device_added_signal 信号到 Homepage 的槽函数 self.handle_device_added
+        add_device_page.device_added_signal.connect(self.handle_device_added)
+        SiGlobal.siui.windows["MAIN_WINDOW"].layerChildPage().setChildPage(add_device_page)
+
+    def handle_device_added(self, device_config):  # 新的槽函数，用于接收设备配置数据
+        # 使用 device_config 创建 ADBDeviceCard 实例
+        device_card = ADBDeviceCard(
+            device_name=device_config.get("device_name", "Unknown Device"),
+            config=device_config,  # 传递整个配置数据
+            status="Disconnected",  # 初始状态设置为 "Disconnected"
+            parent=self
+        )
+        # SiGlobal.siui._reloadWidgetStyleSheet(device_card)
+        device_card.reloadStyleSheet()
+        device_card.show()
+        device_card.setVisible(True)
+        device_card.adjustSize()
+
+        self.devices_container.addWidget(device_card)
+
+
+        # 修复样式无法显示,以及位置不正确的bug
+        device_card.setVisible(True)
+        SiGlobal.siui.reloadAllWindowsStyleSheet()
+        self.devices_container.arrangeWidget()

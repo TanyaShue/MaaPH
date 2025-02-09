@@ -13,7 +13,7 @@ class SiLogItem(SiWidget):
         self.title.setFont(SiFont.getFont(size=10)) # Smaller font size for timestamp
         self.title.setTextColor(self.getColor(SiColor.TEXT_D))
         self.title.setAlignment(Qt.AlignLeft)
-        self.title.setContentsMargins(0, 4, 0, 0) # Reduced top margin
+        self.title.setContentsMargins(0, 0, 0, 0) # Reduced top margin
         self.title.move(0, 0) # Align to the left edge
         self.title.adjustSize()
 

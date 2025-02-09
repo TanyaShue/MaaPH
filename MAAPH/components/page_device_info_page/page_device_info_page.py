@@ -147,33 +147,36 @@ class ExampleDeviceInfoPage(SiPage):
         container_operation.body().addWidget(operation_scroll_area)  # 将滚动区域添加到操作面板卡片的内容
 
         # ---------------- 右侧面板：日志面板 - 使用 SiScrollArea 滚动容器 - 优化后 ----------------
-        container_log = OptionCardPlaneForWidgetDemos(self)
+        container_log = SiOptionCardPlane(self)
         container_log.setTitle("日志面板")
-        container_log.setFixedHeight(80 + 8 + 300)
+        container_log.setFixedHeight(388)
         container_log.setFixedWidth(320)
 
         log_scroll_area = SiScrollArea(self)  # 创建 日志面板 的滚动区域
         log_scroll_area.setFixedWidth(200)  # 设置 SiScrollArea 的宽度, 保留固定宽度
         log_scroll_area.setFixedHeight(300)  # 设置 SiScrollArea 的高度,  保留固定高度
-        # log_scroll_area.adjustSize()  # 移除 adjustSize()
+        log_scroll_area.adjustSize()  # 移除 adjustSize()
 
         log_scroll_content = SiDenseVContainer(self)  # 使用 SiDenseVContainer 作为滚动内容
-        log_scroll_content.setFixedWidth(200)  # 保留固定宽度，控制内容宽度，用于文本换行
+        log_scroll_content.adjustSize()
         log_scroll_content.setSpacing(1)  # Reduced spacing for log items
 
         # 示例日志项 - 使用 SiLogItem (保持不变)
         item1 = SiLogItem(self)
         item1.setContent("11:45:14", f"{device_name} 启动成功")
+        item1.setFixedWidth(log_scroll_area.width()-8)
         item1.adjustSize()
 
         item2 = SiLogItem(self)
         item2.setContent("19:19:10", f"{device_name} 运行正常")
         item2.setContent("19:19:10",
                          f"{device_name} 运行正常, 这是一个比较长的日志信息，用于测试SiLogItem组件的自动换行和显示效果。看看多行日志是否能够正确显示和滚动。")  # Example with longer description
+        item2.setFixedWidth(log_scroll_area.width()-8)
         item2.adjustSize()
 
         item3 = SiLogItem(self)
         item3.setContent("00:00:00", f"{device_name} 检测到异常")
+        item3.setFixedWidth(log_scroll_area.width()-8)
         item3.adjustSize()
 
         # 将日志项添加到滚动内容的布局中 (保持不变)

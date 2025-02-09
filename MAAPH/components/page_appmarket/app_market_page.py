@@ -54,7 +54,7 @@ class AppMarketPage(SiPage):
         main_container.addWidget(self.details_container)
 
         # 添加一个标题和主容器到整体的分组中
-        self.titled_widget_group.addTitle("应用市场")
+        self.titled_widget_group.addTitle("资源市场")
         self.titled_widget_group.addWidget(main_container)
         self.titled_widget_group.addPlaceholder(64)  # 占位符
 
