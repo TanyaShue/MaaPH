@@ -39,7 +39,7 @@ class About(SiPage):
         self.version_label.setSiliconWidgetFlag(Si.AdjustSizeOnTextChanged)
         self.version_label.setFont(SiFont.tokenized(GlobalFont.M_NORMAL))
         self.version_label.setStyleSheet(f"color: {self.getColor(SiColor.TEXT_D)}")
-        self.version_label.setText("PyQt-SiliconUI")
+        self.version_label.setText("MaaPH")
 
         version_picture_container.addWidget(self.version_picture)
         version_picture_container.addWidget(self.version_label)
@@ -69,7 +69,7 @@ class About(SiPage):
             group.addTitle("版权")
 
             self.option_card_copyright = SiOptionCardLinear(self)
-            self.option_card_copyright.setTitle("版权声明", "PyQt-SiliconUI 版权所有 © 2024 by ChinaIceF")
+            self.option_card_copyright.setTitle("版权声明", "MaaPH 版权所有 © 2024 by ChinaIceF")
             self.option_card_copyright.load(SiGlobal.siui.iconpack.get("ic_fluent_info_regular"))
 
             group.addWidget(self.option_card_copyright)
