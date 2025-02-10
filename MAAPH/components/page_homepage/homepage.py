@@ -1,4 +1,5 @@
 from PyQt5.QtCore import Qt
+from siui.components.container import SiDenseContainer
 
 from MAAPH.components.page_dialog.components.add_device_page import AddDevicePage
 from siui.components import SiPixLabel
@@ -72,10 +73,8 @@ class Homepage(SiPage):
 
         # ------------------ 设备展示区域 ------------------
         # 用于展示已连接的 adb 设备（示例中添加两个设备卡片）
-        self.devices_container = SiDenseHContainer(self)
+        self.devices_container = SiDenseContainer(self)
         self.devices_container.setFixedHeight(180)
-        self.devices_container.setAlignment(Qt.AlignCenter)
-        self.devices_container.setSpacing(16)
 
         # 示例设备卡片（后续可动态生成）
         device_card_1 = ADBDeviceCard(device_name="Device 1",config="{}", status="Connected", parent=self)
@@ -84,7 +83,6 @@ class Homepage(SiPage):
         # self.devices_container.addWidget(device_card_2)
 
         # ------------------ 底部按钮区域 ------------------
-        # 一个简单的按钮区域，例如进入插件市场
         self.bottom_area = SiDenseVContainer(self)
         self.bottom_area.setAlignment(Qt.AlignCenter)
         self.bottom_area.setSpacing(12)
@@ -137,6 +135,4 @@ class Homepage(SiPage):
 
 
         # 修复样式无法显示,以及位置不正确的bug
-        device_card.setVisible(True)
         SiGlobal.siui.reloadAllWindowsStyleSheet()
-        self.devices_container.arrangeWidget()

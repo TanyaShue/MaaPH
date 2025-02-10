@@ -277,7 +277,6 @@ class ABCAnimatedLabel(QLabel):
 
     def resizeTo(self, w: int, h: int):
         """ 具动画重设大小到目标尺寸 """
-        print("aaaa")
         if self.isSiliconWidgetFlagOn(Si.InstantResize) is False and self.isVisible() is True:
             self.animation_resize.setTarget([w, h])
             self.activateResize()

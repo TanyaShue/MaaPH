@@ -1,13 +1,11 @@
 from PyQt5.QtCore import pyqtSignal
+from siui.components.editbox import SiLineEdit
 
 from siui.components.combobox.combobox import SiComboBox
 
 from siui.components.widgets.button import SiSimpleButton
 
 from siui.components import (
-    SiCircularProgressBar,
-    SiLineEditWithItemName,
-    SiOptionCardLinear,
     SiOptionCardPlane,
     SiPushButton,
     SiTitledWidgetGroup,
@@ -59,32 +57,37 @@ class AddDevicePage(SiChildPage):
 
 
             # 设备名称输入框
-            self.line_edit_device_name = SiLineEditWithItemName(self)
-            self.line_edit_device_name.setName("设备名称") # 设备名称标签
+            self.line_edit_device_name = SiLineEdit(self)
+            self.line_edit_device_name.setTitle("设备名称") # 设备名称标签
             self.line_edit_device_name.setFixedHeight(32) # 设置高度
+            self.line_edit_device_name.resize(560, 32)
 
             # ADB 路径
-            self.line_edit_adb_path = SiLineEditWithItemName(self)
-            self.line_edit_adb_path.setName("ADB 路径") # ADB 路径标签
+            self.line_edit_adb_path = SiLineEdit(self)
+            self.line_edit_adb_path.setTitle("ADB 路径") # ADB 路径标签
             self.line_edit_adb_path.setFixedHeight(32)
+            self.line_edit_adb_path.resize(560, 32)
             # self.line_edit_adb_path.setReadOnly(True) # 设置为只读，因为通常自动获取
 
             # ADB 地址
-            self.line_edit_adb_address = SiLineEditWithItemName(self)
-            self.line_edit_adb_address.setName("ADB 地址") # ADB 地址标签
+            self.line_edit_adb_address = SiLineEdit(self)
+            self.line_edit_adb_address.setTitle("ADB 地址") # ADB 地址标签
             self.line_edit_adb_address.setFixedHeight(32)
+            self.line_edit_adb_address.resize(560, 32)
             # self.line_edit_adb_address.setReadOnly(True) # 设置为只读
 
             # Screencap Methods
-            self.line_edit_screencap_methods = SiLineEditWithItemName(self)
-            self.line_edit_screencap_methods.setName("截图方法") # 截图方法标签
+            self.line_edit_screencap_methods = SiLineEdit(self)
+            self.line_edit_screencap_methods.setTitle("截图方法") # 截图方法标签
             self.line_edit_screencap_methods.setFixedHeight(32)
+            self.line_edit_screencap_methods.resize(560, 32)
             # self.line_edit_screencap_methods.setReadOnly(True) # 设置为只读
 
             # Input Methods
-            self.line_edit_input_methods = SiLineEditWithItemName(self)
-            self.line_edit_input_methods.setName("输入法") # 输入法标签
+            self.line_edit_input_methods = SiLineEdit(self)
+            self.line_edit_input_methods.setTitle("输入法") # 输入法标签
             self.line_edit_input_methods.setFixedHeight(32)
+            self.line_edit_input_methods.resize(560, 32)
             # self.line_edit_input_methods.setReadOnly(True) # 设置为只读
 
             # 将设备名称和 ADB 配置信息输入框添加到设备信息卡片中
@@ -105,19 +108,23 @@ class AddDevicePage(SiChildPage):
             self.advanced_settings_card.setTitle("高级设置") # 高级设置卡片标题
 
             # 定时启动
-            self.line_edit_scheduled_startup = SiLineEditWithItemName(self)
-            self.line_edit_scheduled_startup.setName("定时启动") # 定时启动标签
+            self.line_edit_scheduled_startup = SiLineEdit(self)
+            self.line_edit_scheduled_startup.setTitle("定时启动") # 定时启动标签
             self.line_edit_scheduled_startup.setFixedHeight(32)
+            self.line_edit_scheduled_startup.resize(560, 32)
 
             # 启动前命令
-            self.line_edit_pre_startup_command = SiLineEditWithItemName(self)
-            self.line_edit_pre_startup_command.setName("启动前命令") # 启动前命令标签
+            self.line_edit_pre_startup_command = SiLineEdit(self)
+            self.line_edit_pre_startup_command.setTitle("启动前命令") # 启动前命令标签
             self.line_edit_pre_startup_command.setFixedHeight(32)
+            self.line_edit_pre_startup_command.resize(560, 32)
+
 
             # 启动后命令
-            self.line_edit_post_startup_command = SiLineEditWithItemName(self)
-            self.line_edit_post_startup_command.setName("启动后命令") # 启动后命令标签
+            self.line_edit_post_startup_command = SiLineEdit(self)
+            self.line_edit_post_startup_command.resize(560, 32)
             self.line_edit_post_startup_command.setFixedHeight(32)
+            self.line_edit_post_startup_command.setTitle("启动后命令") # 启动后命令标签
 
             # 将高级设置输入框添加到高级设置卡片中
             self.advanced_settings_card.body().setAdjustWidgetsSize(True)
@@ -143,7 +150,7 @@ class AddDevicePage(SiChildPage):
         SiGlobal.siui.reloadStyleSheetRecursively(self)
 
     def on_add_device_clicked(self):
-        device_name = self.line_edit_device_name.lineEdit().text()
+        device_name = self.line_edit_device_name.text()
         print(device_name)
         if not device_name:
             # SiGlobal.siui.messagebox.warning(self, "设备名称不能为空", "请填写设备名称")
@@ -153,17 +160,15 @@ class AddDevicePage(SiChildPage):
         # 获取设备配置数据 (从输入框中获取，或者您有其他获取配置的方式)
         device_config = {
             "device_name": device_name,
-            "adb_path": self.line_edit_adb_path.lineEdit().text(),
-            "adb_address": self.line_edit_adb_address.lineEdit().text(),
-            "screencap_methods": self.line_edit_screencap_methods.lineEdit().text(),
-            "input_methods": self.line_edit_input_methods.lineEdit().text(),
-            "scheduled_startup": self.line_edit_scheduled_startup.lineEdit().text(),
-            "pre_startup_command": self.line_edit_pre_startup_command.lineEdit().text(),
-            "post_startup_command": self.line_edit_post_startup_command.lineEdit().text(),
+            "adb_path": self.line_edit_adb_path.text(),
+            "adb_address": self.line_edit_adb_address.text(),
+            "screencap_methods": self.line_edit_screencap_methods.text(),
+            "input_methods": self.line_edit_input_methods.text(),
+            "scheduled_startup": self.line_edit_scheduled_startup.text(),
+            "pre_startup_command": self.line_edit_pre_startup_command.text(),
+            "post_startup_command": self.line_edit_post_startup_command.text(),
             # ... 其他配置信息 ...
         }
-        print(device_config)
-        # 将设备配置数据传递回 Homepage，并关闭子页面
         # 发射信号，传递设备配置数据
         self.device_added_signal.emit(device_config)
         self.closeParentLayer()
