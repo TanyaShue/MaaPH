@@ -1,17 +1,18 @@
 from PyQt5.QtCore import Qt
-from siui.components.container import SiDenseContainer
+from maa.toolkit import Toolkit
 
 from MAAPH.components.page_dialog.components.add_device_page import AddDevicePage
+from MAAPH.control.tasker_service_manager import TaskerServiceManager
 from siui.components import SiPixLabel
+from siui.components.container import SiDenseContainer
 # 用于展示 adb 设备的卡片示例
 from siui.components.option_card import SiOptionCardPlane
 from siui.components.page import SiPage
 from siui.components.titled_widget_group import SiTitledWidgetGroup
+from siui.components.widgets import SiDenseVContainer, SiLabel, SiSimpleButton
 from siui.components.widgets import (
-    SiDenseHContainer,
     SiPushButton,
 )
-from siui.components.widgets import SiDenseVContainer, SiLabel, SiSimpleButton
 from siui.core import GlobalFont, SiColor
 from siui.core import SiGlobal
 from siui.gui import SiFont
@@ -132,6 +133,7 @@ class Homepage(SiPage):
         device_card.adjustSize()
 
         self.devices_container.addWidget(device_card)
+        print(Toolkit.find_adb_devices())
 
 
         # 修复样式无法显示,以及位置不正确的bug

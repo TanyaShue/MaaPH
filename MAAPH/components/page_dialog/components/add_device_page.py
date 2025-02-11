@@ -1,16 +1,14 @@
 from PyQt5.QtCore import pyqtSignal
-from siui.components.editbox import SiLineEdit
-
-from siui.components.combobox.combobox import SiComboBox
-
-from siui.components.widgets.button import SiSimpleButton
 
 from siui.components import (
     SiOptionCardPlane,
     SiPushButton,
     SiTitledWidgetGroup,
 )
+from siui.components.combobox.combobox import SiComboBox
+from siui.components.editbox import SiLineEdit
 from siui.components.page.child_page import SiChildPage
+from siui.components.widgets.button import SiSimpleButton
 from siui.core import SiGlobal
 
 

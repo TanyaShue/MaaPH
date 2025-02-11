@@ -1,4 +1,5 @@
 from PyQt5.QtCore import Qt, QSize
+
 from siui.components.widgets.abstracts.widget import SiWidget
 from siui.components.widgets.label import SiLabel
 from siui.core import SiColor

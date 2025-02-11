@@ -7,7 +7,6 @@ from siui.core import SiGlobal
 from ui import MySiliconApp
 
 
-
 def show_version_message(window):
     window.LayerRightMessageSidebar().send(
         title="Welcome to MAAPH",

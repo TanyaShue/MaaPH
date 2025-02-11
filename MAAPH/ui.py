@@ -3,10 +3,11 @@ from PyQt5.QtWidgets import QDesktopWidget
 
 import icons
 import siui
-from components.page_about import About
-from MAAPH.components.page_homepage.homepage import Homepage
 from MAAPH.components.page_appmarket.app_market_page import AppMarketPage
 from MAAPH.components.page_device_info_page.page_device_info_page import ExampleDeviceInfoPage
+from MAAPH.components.page_homepage.homepage import Homepage
+from MAAPH.control.tasker_service_manager import TaskerServiceManager
+from components.page_about import About
 from siui.core import SiColor, SiGlobal
 from siui.templates.application.application import SiliconApplication
 
@@ -19,6 +20,8 @@ siui.core.globals.SiGlobal.siui.loadIcons(
 class MySiliconApp(SiliconApplication):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+        self.task_manager = TaskerServiceManager()
 
         screen_geo = QDesktopWidget().screenGeometry()
         self.setMinimumSize(1024, 380)
