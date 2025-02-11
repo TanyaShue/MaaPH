@@ -1,6 +1,8 @@
 from PyQt5.QtCore import pyqtSignal
-from maa.toolkit import Toolkit
 
+from maa.toolkit import Toolkit, AdbDevice
+
+from MAAPH.control.background_task_runner import BackgroundTaskRunner
 from siui.components import (
     SiOptionCardPlane,
     SiPushButton,
@@ -22,7 +24,12 @@ class AddDevicePage(SiChildPage):
         self.view().setMinimumWidth(800)
         self.content().setTitle("添加新设备")
         self.content().setPadding(64)
-
+        # 初始化 BackgroundTaskRunner 实例
+        self.background_task_runner = BackgroundTaskRunner()
+        # 连接 task_finished 信号到 self.on_search_device_finished 槽函数
+        self.background_task_runner.task_finished.connect(self.on_search_device_finished)
+        # 连接 error 信号到 self.on_search_device_error 槽函数
+        self.background_task_runner.error.connect(self.on_search_device_error)
 
         # 页面内容 - 使用 SiTitledWidgetGroup 分组
         self.titled_widget_group = SiTitledWidgetGroup(self)
@@ -37,15 +44,16 @@ class AddDevicePage(SiChildPage):
             header_button.setFixedHeight(32)
             header_button.attachment().setText("搜索设备")
             header_button.attachment().load(SiGlobal.siui.iconpack.get("ic_fluent_window_header_horizontal_regular"))
-            header_button.clicked.connect(self.search_device)
+            header_button.clicked.connect(self.search_device) # 点击按钮时调用 search_device 方法
             header_button.adjustSize()
             self.select_device_combobox = SiComboBox(self)
             self.select_device_combobox.resize(400, 32)
-            self.select_device_combobox.addOption("Chicken you are so beautiful")
+            self.select_device_combobox.addOption("请点击搜索设备") # 初始提示信息
             self.select_device_combobox.menu().setShowIcon(False)
             self.select_device_combobox.menu().setIndex(0)
             self.device_info_card.header().addWidget(self.select_device_combobox,side="right")
             self.device_info_card.header().addWidget(header_button,side="right")
+
             # 重载样式,解决下拉菜单样式丢失的bug
             SiGlobal.siui._reloadWidgetStyleSheet(self.select_device_combobox.menu())
             self.select_device_combobox.menu().reloadStyleSheet()
@@ -80,12 +88,12 @@ class AddDevicePage(SiChildPage):
 
             # Input Methods
             self.line_edit_input_methods = SiLineEdit(self)
-            self.line_edit_input_methods.setTitle("输入法") # 输入法标签
+            self.line_edit_input_methods.setTitle("输入方法") # 输入法标签
             self.line_edit_input_methods.setFixedHeight(32)
             self.line_edit_input_methods.resize(560, 32)
             # config
             self.line_edit_config = SiLineEdit(self)
-            self.line_edit_config.setTitle("输入法") # 输入法标签
+            self.line_edit_config.setTitle(" 配置") # 输入法标签
             self.line_edit_config.setFixedHeight(32)
             self.line_edit_config.resize(560, 32)
 
@@ -175,23 +183,58 @@ class AddDevicePage(SiChildPage):
         self.closeParentLayer()
 
     def search_device(self):
-        devices=Toolkit.find_adb_devices()
+        # 在点击搜索设备按钮时，禁用下拉菜单，显示加载状态 (可选)
+        self.select_device_combobox.clearOptions() # 清空之前的选项
+        self.select_device_combobox.addOption("正在搜索设备...") # 显示加载信息
+        self.select_device_combobox.setEnabled(False) # 禁用下拉菜单，防止用户在搜索时操作
+        SiGlobal.siui._reloadWidgetStyleSheet(self.select_device_combobox.menu()) # 重新加载样式以更新 UI
+        self.select_device_combobox.menu().reloadStyleSheet()
+
+        # 使用 BackgroundTaskRunner 在后台线程中执行 Toolkit.find_adb_devices
+        self.background_task_runner.run(Toolkit.find_adb_devices)
+
+    def on_search_device_finished(self, devices):
+        """
+        槽函数：当设备搜索任务完成时被调用，更新下拉菜单。
+        """
+        self.select_device_combobox.clearOptions() # 清空加载信息
+        self.select_device_combobox.setEnabled(True) # 重新启用下拉菜单
         if devices:
             for device in devices:
-                print(device)
-                self.select_device_combobox.addOption(f"{device.address}: {device.name}")
-            SiGlobal.siui._reloadWidgetStyleSheet(self.select_device_combobox.menu())
-            self.select_device_combobox.menu().reloadStyleSheet()
-    # def set_adb_config(self, adb_config):
-    #     """
-    #     用于设置 ADB 配置信息，并更新到界面上。
-    #     """
-    #     if adb_config:
-    #         self.line_edit_adb_path.setText(adb_config.get("adb_path", ""))
-    #         self.line_edit_adb_address.setText(adb_config.get("adb_address", ""))
-    #         # 转换数值型 methods 为字符串显示
-    #         screencap_methods_str = str(adb_config.get("screencap_methods", ""))
-    #         input_methods_str = str(adb_config.get("input_methods", ""))
-    #         self.line_edit_screencap_methods.setText(screencap_methods_str)
-    #         self.line_edit_input_methods.setText(input_methods_str)
+                option_text = f"{device.address}: {device.name}"
+                self.select_device_combobox.addOption(option_text, value=device)  # 存储 AdbDevice 对象作为 userData
+            self.select_device_combobox.menu().setIndex(0)
+        else:
+            self.select_device_combobox.addOption("未找到设备") # 没有找到设备时的提示
 
+        self.select_device_combobox.menu().valueChanged.connect(self.set_device_config_to_page)
+        SiGlobal.siui._reloadWidgetStyleSheet(self.select_device_combobox.menu())
+        self.select_device_combobox.menu().reloadStyleSheet()
+
+    def on_search_device_error(self, error_msg):
+        """
+        槽函数：当设备搜索任务出错时被调用，显示错误信息。
+        """
+        self.select_device_combobox.clearOptions()
+        self.select_device_combobox.setEnabled(True) # 重新启用下拉菜单
+        self.select_device_combobox.addOption("搜索设备出错，请重试") # 显示错误信息
+        SiGlobal.siui._reloadWidgetStyleSheet(self.select_device_combobox.menu())
+        self.select_device_combobox.menu().reloadStyleSheet()
+        print("设备搜索出错:", error_msg) # 打印详细错误信息，方便调试
+
+    def set_device_config_to_page(self):
+        """
+        当在设备下拉菜单中选择设备后，将 AdbDevice 对象的信息填充到页面上的输入框中。
+        """
+        device = self.select_device_combobox.menu().value()  # 获取关联的 AdbDevice 对象
+        if isinstance(device, AdbDevice):  # 确保获取到的是 AdbDevice 对象
+            # 将 AdbDevice 对象的属性值设置到对应的输入框
+            self.line_edit_device_name.setText(device.name if device.name else "")  # 设备名称
+            self.line_edit_adb_path.setText(str(device.adb_path) if device.adb_path else "")  # ADB 路径，转换为字符串
+            self.line_edit_adb_address.setText(device.address if device.address else "")  # ADB 地址
+            self.line_edit_screencap_methods.setText(
+                str(device.screencap_methods) if device.screencap_methods is not None else "")  # 截图方法，转换为字符串
+            self.line_edit_input_methods.setText(
+                str(device.input_methods) if device.input_methods is not None else "")  # 输入法，转换为字符串
+            self.line_edit_config.setText(
+                str(device.config) if device.config else "")  # Config，转换为字符串 (或根据 config 的实际结构处理)

@@ -127,3 +127,6 @@ class SiComboBox(ABCSiComboBox):
     def resizeEvent(self, event):
         super().resizeEvent(event)
         self.unfold_menu_button.resize(event.size())
+
+    def clearOptions(self):
+        self.menu().clearOptions()

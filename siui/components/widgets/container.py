@@ -165,17 +165,13 @@ class SiDenseHContainer(ABCDenseContainer):
         从容器中移除控件
         :param widget: 控件
         """
-        if widget in self.widgets_left:
-            index = self.widgets_left.index(widget)
-            self.widgets_left.pop(index)
-            return
-
-        if widget in self.widgets_right:
-            index = self.widgets_left.index(widget)
-            self.widgets_left.pop(index)
-            return
-
-        raise ValueError(f"Widget provided ({widget}) is not in this container.")
+        try:
+            self.widgets_left.remove(widget)
+        except ValueError:
+            try:
+                self.widgets_right.remove(widget)
+            except ValueError:
+                raise ValueError(f"Widget provided ({widget}) is not in this container.")
 
     def sizeHint(self):
         # 创建计数器

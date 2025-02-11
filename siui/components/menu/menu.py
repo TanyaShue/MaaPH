@@ -26,6 +26,32 @@ class SiMenu(ABCSiMenu):
         self.body().addWidget(new_option)
         self.body().arrangeWidget()
 
+    def clearOptions(self):
+        # 遍历所有选项
+        for option in self.options_:
+            # 从容器中移除该选项（假设 self.body() 提供 removeWidget 方法）
+            self.body().removeWidget(option)
+            # 如果需要，可以调用 option.deleteLater()（例如在 PyQt 中释放资源）
+            option.deleteLater()
+
+        # 清空选项列表
+        self.options_.clear()
+
+        # 重新排列容器中的组件（更新布局）
+        self.body().arrangeWidget()
+
+    def removeOption(self, option: SiMenuOption):
+        # 如果该选项存在于菜单中
+        if option in self.options_:
+            # 从容器中移除该选项（假设 self.body() 提供 removeWidget 方法）
+            self.body().removeWidget(option)
+            # 从选项列表中移除该选项
+            self.options_.remove(option)
+            # 释放资源（例如在 PyQt 中，deleteLater() 会延迟删除对象）
+            option.deleteLater()
+            # 更新布局以反映更改
+            self.body().arrangeWidget()
+
 
 class SiInteractionMenu(SiWidget):
     indexChanged = pyqtSignal(int)

@@ -133,7 +133,6 @@ class Homepage(SiPage):
         device_card.adjustSize()
 
         self.devices_container.addWidget(device_card)
-        print(Toolkit.find_adb_devices())
 
 
         # 修复样式无法显示,以及位置不正确的bug
