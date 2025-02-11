@@ -1,4 +1,5 @@
 from PyQt5.QtCore import pyqtSignal
+from maa.toolkit import Toolkit
 
 from siui.components import (
     SiOptionCardPlane,
@@ -36,22 +37,18 @@ class AddDevicePage(SiChildPage):
             header_button.setFixedHeight(32)
             header_button.attachment().setText("搜索设备")
             header_button.attachment().load(SiGlobal.siui.iconpack.get("ic_fluent_window_header_horizontal_regular"))
+            header_button.clicked.connect(self.search_device)
             header_button.adjustSize()
-            select_device_combobox = SiComboBox(self)
-            select_device_combobox.resize(256, 32)
-            select_device_combobox.addOption("Chicken you are so beautiful")
-            select_device_combobox.addOption("你干嘛嗨嗨呦~")
-            select_device_combobox.addOption("迎面走来的你让我如此蠢蠢欲动")
-            select_device_combobox.addOption("唱跳Rap篮球")
-            select_device_combobox.addOption("鸡你实在是太美")
-            select_device_combobox.addOption("我们一起学鸡叫")
-            select_device_combobox.menu().setShowIcon(False)
-            select_device_combobox.menu().setIndex(0)
-            self.device_info_card.header().addWidget(select_device_combobox,side="right")
+            self.select_device_combobox = SiComboBox(self)
+            self.select_device_combobox.resize(400, 32)
+            self.select_device_combobox.addOption("Chicken you are so beautiful")
+            self.select_device_combobox.menu().setShowIcon(False)
+            self.select_device_combobox.menu().setIndex(0)
+            self.device_info_card.header().addWidget(self.select_device_combobox,side="right")
             self.device_info_card.header().addWidget(header_button,side="right")
             # 重载样式,解决下拉菜单样式丢失的bug
-            SiGlobal.siui._reloadWidgetStyleSheet(select_device_combobox.menu())
-            select_device_combobox.menu().reloadStyleSheet()
+            SiGlobal.siui._reloadWidgetStyleSheet(self.select_device_combobox.menu())
+            self.select_device_combobox.menu().reloadStyleSheet()
 
 
             # 设备名称输入框
@@ -86,7 +83,12 @@ class AddDevicePage(SiChildPage):
             self.line_edit_input_methods.setTitle("输入法") # 输入法标签
             self.line_edit_input_methods.setFixedHeight(32)
             self.line_edit_input_methods.resize(560, 32)
-            # self.line_edit_input_methods.setReadOnly(True) # 设置为只读
+            # config
+            self.line_edit_config = SiLineEdit(self)
+            self.line_edit_config.setTitle("输入法") # 输入法标签
+            self.line_edit_config.setFixedHeight(32)
+            self.line_edit_config.resize(560, 32)
+
 
             # 将设备名称和 ADB 配置信息输入框添加到设备信息卡片中
             self.device_info_card.body().setAdjustWidgetsSize(True) # 允许调整部件大小
@@ -95,6 +97,7 @@ class AddDevicePage(SiChildPage):
             self.device_info_card.body().addWidget(self.line_edit_adb_address)
             self.device_info_card.body().addWidget(self.line_edit_screencap_methods)
             self.device_info_card.body().addWidget(self.line_edit_input_methods)
+            self.device_info_card.body().addWidget(self.line_edit_config)
             self.device_info_card.body().addPlaceholder(12) # 添加一些空白占位
             self.device_info_card.adjustSize() # 调整卡片大小
 
@@ -149,7 +152,6 @@ class AddDevicePage(SiChildPage):
 
     def on_add_device_clicked(self):
         device_name = self.line_edit_device_name.text()
-        print(device_name)
         if not device_name:
             # SiGlobal.siui.messagebox.warning(self, "设备名称不能为空", "请填写设备名称")
             device_name = "Unknown Device"
@@ -162,6 +164,7 @@ class AddDevicePage(SiChildPage):
             "adb_address": self.line_edit_adb_address.text(),
             "screencap_methods": self.line_edit_screencap_methods.text(),
             "input_methods": self.line_edit_input_methods.text(),
+            "config": self.line_edit_config.text(),
             "scheduled_startup": self.line_edit_scheduled_startup.text(),
             "pre_startup_command": self.line_edit_pre_startup_command.text(),
             "post_startup_command": self.line_edit_post_startup_command.text(),
@@ -171,6 +174,14 @@ class AddDevicePage(SiChildPage):
         self.device_added_signal.emit(device_config)
         self.closeParentLayer()
 
+    def search_device(self):
+        devices=Toolkit.find_adb_devices()
+        if devices:
+            for device in devices:
+                print(device)
+                self.select_device_combobox.addOption(f"{device.address}: {device.name}")
+            SiGlobal.siui._reloadWidgetStyleSheet(self.select_device_combobox.menu())
+            self.select_device_combobox.menu().reloadStyleSheet()
     # def set_adb_config(self, adb_config):
     #     """
     #     用于设置 ADB 配置信息，并更新到界面上。
