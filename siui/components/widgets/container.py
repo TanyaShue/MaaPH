@@ -818,7 +818,6 @@ class SiMasonryContainer(ABCSiFlowContainer):
             no_arrange_exceptions = []
         if no_ani_exceptions is None:
             no_ani_exceptions = []
-
         for index, widget in enumerate(self.widgets_):
             column_index = index % self.columns
 
@@ -839,6 +838,11 @@ class SiMasonryContainer(ABCSiFlowContainer):
         if adjust_size is True:
             self.adjustSize()
 
+    def calculateColumnAmount(self, width):
+        """ Calculate column amount based on width provided. """
+        columns = (width + self.spacing[0]) // (self.column_width + self.spacing[0])
+        return max(columns, 1)  # 确保列数至少为 1
+
     def adjustColumnAmount(self, width=None):
         """ Adjust the column amount of this container based on its width. """
         if width is None:
@@ -846,12 +850,9 @@ class SiMasonryContainer(ABCSiFlowContainer):
         else:
             self.resize(width, self.height())
 
-        self.setColumns(self.calculateColumnAmount(width))
+        calculated_columns = self.calculateColumnAmount(width)  # 存储计算结果
+        self.setColumns(calculated_columns)
         self.arrangeWidgets()
-
-    def calculateColumnAmount(self, width):
-        """ Calculate column amount based on width provided. """
-        return (width + self.spacing[0]) // (self.column_width + self.spacing[0])
 
     def adjustSize(self):
         self.resize(self.width(), self.preferred_height)

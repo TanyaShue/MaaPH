@@ -1,7 +1,15 @@
+import random
+
 from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QLabel
+from siui.components.container import SiDenseContainer
+
+from siui.components.widgets.button import SiSimpleButton
+
+from MAAPH.components.option_card import OptionCardPlaneForWidgetDemos
 from siui.components.widgets.label import SiDraggableLabel
 
-from siui.components.widgets.container import SiFlowContainer
+from siui.components.widgets.container import SiFlowContainer, SiMasonryContainer
 
 from MAAPH.components.custom_components.log_item import SiLogItem
 from siui.components import SiPushButton
@@ -16,7 +24,7 @@ from siui.components.widgets import (
     SiScrollArea,  # 导入 SiScrollArea
 )
 # 假设 SiColor 已经定义，你也可以自行替换为具体颜色代码
-from siui.core import SiGlobal, Si
+from siui.core import SiGlobal, Si, SiColor
 
 
 class ExampleDeviceInfoPage(SiPage):
@@ -79,7 +87,7 @@ class ExampleDeviceInfoPage(SiPage):
 
         # -------------------- 资源选择卡片内容修改 - 使用 SiScrollArea (保持不变) --------------------
         resource_scroll_area = SiScrollArea(self)  # 创建 SiScrollArea 滚动区域
-        resource_scroll_area.setFixedWidth(400)
+        resource_scroll_area.setFixedWidth(440)
         resource_scroll_area.setFixedHeight(200)
         resource_scroll_area.adjustSize()
         resource_scroll_content = SiDenseVContainer(self)  # 使用 SiDenseVContainer 作为 SiScrollArea 的内容
@@ -93,7 +101,7 @@ class ExampleDeviceInfoPage(SiPage):
         for resource_name in resources:
             # 创建一行的水平布局容器 (保持不变)
             resource_row = SiDenseHContainer(self)
-            resource_row.setFixedWidth(360)
+            resource_row.setFixedWidth(420)
 
             radio_button = SiRadioButtonRefactor(self)
             radio_button.setText(resource_name)
@@ -121,28 +129,73 @@ class ExampleDeviceInfoPage(SiPage):
         container_v.addWidget(container_resource)
 
         # ---------------- 中间面板：操作面板 - 使用 SiScrollArea 滚动容器 ----------------
-        container_operation = SiOptionCardPlane(self)
-        container_operation.setTitle("任务面板")
-        container_operation.setFixedHeight(80 + 8 + 300)
-        container_operation.setFixedWidth(320)
-
-        operation_scroll_area = SiScrollArea(self)  # 创建 操作面板 的滚动区域
-        operation_scroll_area.setFixedWidth(300)
-        operation_scroll_area.setFixedHeight(200)
-        operation_scroll_area.adjustSize()
-
-        operation_scroll_content = SiDenseVContainer(self)  # 使用 SiDenseVContainer 作为滚动内容
-        operation_scroll_content.setSpacing(6)
-
-        label_operation = SiLabel(self)
-        label_operation.setStyleSheet("color: {}".format(SiGlobal.siui.colors["TEXT_D"]))
-        label_operation.setText(f"这里可以操作 {device_name} 的各项功能")
-        label_operation.setAlignment(Qt.AlignCenter)
-        label_operation.setFixedHeight(220)
-        operation_scroll_content.addWidget(label_operation)  # 将label_operation添加到滚动内容中
-
-        operation_scroll_area.setAttachment(operation_scroll_content)  # 设置滚动内容
-        container_operation.body().addWidget(operation_scroll_area)  # 将滚动区域添加到操作面板卡片的内容
+        # container_operation = SiOptionCardPlane(self)
+        # container_operation.setTitle("任务面板")
+        # container_operation.setFixedHeight(80 + 8 + 300)
+        # container_operation.setFixedWidth(320)
+        #
+        # operation_scroll_area = SiScrollArea(self)  # 创建 操作面板 的滚动区域
+        # operation_scroll_area.setFixedWidth(310)
+        # operation_scroll_area.setFixedHeight(300)
+        # operation_scroll_area.adjustSize()
+        #
+        # operation_scroll_content = SiMasonryContainer(self)  # 使用 SiMasonryContainer 作为滚动内容
+        # # operation_scroll_content.setSpacing(6) # 可以根据需要调整 SiMasonryContainer 的 Spacing
+        # operation_scroll_content.setAutoAdjustColumnAmount(True)
+        # operation_scroll_content.setColumns(2)
+        # operation_scroll_content.setFixedWidth(300)
+        # operation_scroll_content.setFixedHeight(300)
+        #
+        # for _ in range(16):
+        #     label = SiDraggableLabel(self)
+        #
+        #     # ---  创建 SiDenseHContainer 容器替代原有的 SiSimpleButton ---
+        #     container_h = SiDenseContainer(label)  # 创建水平容器，以 label 作为父对象
+        #
+        #     # 左侧按钮
+        #     button_left = SiSimpleButton(container_h)  # 创建左侧按钮，以水平容器 container_h 作为父对象
+        #     button_left.colorGroup().assign(SiColor.BUTTON_OFF, button_left.getColor(SiColor.INTERFACE_BG_D))
+        #     button_left.setFixedSize(40, 40)  # 设置左侧按钮的固定大小，您可以根据需要调整尺寸
+        #     # button_left.setAttribute(Qt.WA_TransparentForMouseEvents) #  鼠标事件应该由按钮处理，不再需要透明
+        #
+        #     # 中间标签
+        #     text_label = QLabel("任务名称", container_h)  # 创建 QLabel 作为中间的文本标签，以水平容器 container_h 作为父对象
+        #     # 您可以根据需要设置 text_label 的样式，例如字体，对齐方式等等
+        #     # 例如: text_label.setAlignment(Qt.AlignCenter)
+        #
+        #     # 右侧按钮1
+        #     button_right1 = SiSimpleButton(container_h)  # 创建右侧第一个按钮
+        #     button_right1.colorGroup().assign(SiColor.BUTTON_OFF, button_right1.getColor(SiColor.INTERFACE_BG_D))
+        #     button_right1.setFixedSize(30, 30)  # 设置右侧按钮的固定大小，您可以根据需要调整尺寸
+        #     # button_right1.setAttribute(Qt.WA_TransparentForMouseEvents) # 鼠标事件应该由按钮处理
+        #
+        #     # 右侧按钮2
+        #     button_right2 = SiSimpleButton(container_h)  # 创建右侧第二个按钮
+        #     button_right2.colorGroup().assign(SiColor.BUTTON_OFF, button_right2.getColor(SiColor.INTERFACE_BG_D))
+        #     button_right2.setFixedSize(30, 30)  # 设置右侧按钮的固定大小，您可以根据需要调整尺寸
+        #     # button_right2.setAttribute(Qt.WA_TransparentForMouseEvents) # 鼠标事件应该由按钮处理
+        #
+        #     # 将创建的控件按照水平顺序添加到 SiDenseHContainer 容器中
+        #     container_h.addWidget(button_left)  # 添加左侧按钮
+        #     container_h.addWidget(text_label)  # 添加中间标签
+        #     container_h.addWidget(button_right1)  # 使用 addWidgets 一次性添加右侧两个按钮
+        #     container_h.addWidget(button_right2)
+        #
+        #
+        #
+        #     container_h.resize(300, 40)  # 设置水平容器的初始大小，使其宽度和高度与之前的 button 保持一致, 可以根据内容调整
+        #     # container_h.adjustSize() # 或者使用 adjustSize() 让容器根据内容自动调整大小
+        #
+        #     label.setFixedStyleSheet("border-radius: 4px")
+        #     label.setColor(self.getColor(SiColor.INTERFACE_BG_D))
+        #     label.resize(container_h.size())  # label 的大小需要调整为与 container_h 的大小一致
+        #     # label.adjustSize() #  或者使用 adjustSize() 让 label 根据内容自动调整大小
+        #
+        #     operation_scroll_content.addWidget(label, ani=False)
+        #     operation_scroll_content.regDraggableWidget(label)
+        #
+        # operation_scroll_area.setAttachment(operation_scroll_content)  # 设置滚动内容
+        # container_operation.body().addWidget(operation_scroll_area)  # 将滚动区域添加到操作面板卡片的内容
 
         # ---------------- 右侧面板：日志面板 - 使用 SiScrollArea 滚动容器 - 优化后 ----------------
         container_log = SiOptionCardPlane(self)
@@ -187,7 +240,7 @@ class ExampleDeviceInfoPage(SiPage):
 
         # ---------------- 将三个面板加入到水平容器中 (保持不变) ----------------
         container_h.addWidget(container_v)
-        container_h.addWidget(container_operation)
+        # container_h.addWidget(container_operation)
         container_h.addWidget(container_log)
 
         return container_h
