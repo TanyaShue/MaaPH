@@ -22,12 +22,15 @@ def show_version_message(window):
 
 
 if __name__ == "__main__":
-    app = QApplication(sys.argv)
+    try:
+        app = QApplication(sys.argv)
 
-    window = MySiliconApp()
-    window.show()
+        window = MySiliconApp()
+        window.show()
 
-    timer = QTimer(window)
-    timer.singleShot(500, lambda: show_version_message(window))
+        timer = QTimer(window)
+        timer.singleShot(500, lambda: show_version_message(window))
 
-    sys.exit(app.exec_())
+        sys.exit(app.exec_())
+    except Exception as e:
+        print(e)
