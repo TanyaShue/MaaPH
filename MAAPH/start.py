@@ -3,6 +3,7 @@ import sys
 from PyQt5.QtCore import QTimer
 from PyQt5.QtWidgets import QApplication
 
+from MAAPH.control.config.global_config import GlobalConfig
 from siui.core import SiGlobal
 from MAAPH.ui import MySiliconApp
 
@@ -23,6 +24,9 @@ def show_version_message(window):
 
 if __name__ == "__main__":
     try:
+        GlobalConfig().load_devices_config("../assets/config/projects.json")
+
+        GlobalConfig().load_all_resources_from_directory("../assets/resource")
         app = QApplication(sys.argv)
 
         window = MySiliconApp()

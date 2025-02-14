@@ -1,5 +1,10 @@
 from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QBoxLayout
+
+from siui.components.container import SiDenseContainer, SiTriSectionPanelCard
+
 from MAAPH.components.custom_components.log_item import SiLogItem
+from MAAPH.control.config.global_config import GlobalConfig
 from siui.components import SiPushButton
 from siui.components.button import SiRadioButtonRefactor
 from siui.components.option_card import SiOptionCardLinear, SiOptionCardPlane
@@ -30,12 +35,11 @@ class ExampleDeviceInfoPage(SiPage):
         self.titled_widget_group.setSiliconWidgetFlag(Si.EnableAnimationSignals)
 
         # 假设有多个设备信息 (保持不变)
-        devices = ["设备 A", "设备 B", "设备 C"]
 
         # 动态创建每个设备的嵌套容器并添加到页面中 (保持不变)
-        for device in devices:
-            device_container = self.create_device_container(device)
-            self.titled_widget_group.addTitle(device)
+        for device in GlobalConfig().devices_config.devices:
+            device_container = self.create_device_container(device.device_name)
+            self.titled_widget_group.addTitle(device.device_name)
             self.titled_widget_group.addWidget(device_container)
             # 添加间隔让页面布局更美观 (保持不变)
             self.titled_widget_group.addPlaceholder(12)
@@ -81,12 +85,11 @@ class ExampleDeviceInfoPage(SiPage):
         resource_scroll_content = SiDenseVContainer(self)  # 使用 SiDenseVContainer 作为 SiScrollArea 的内容
         resource_scroll_content.setSpacing(6)  # 设置垂直间距，让资源列表更清晰
 
-        # 假设的资源列表 (保持不变)
-        resources = ["阴阳师", "明日方舟", "M9A", "战双", "阴阳师", "明日方舟", "M9A", "战双", "阴阳师", "明日方舟",
-                     "M9A", "战双"]
+        resources = GlobalConfig().resource_configs
+
         radio_buttons = []
 
-        for resource_name in resources:
+        for resource_name, resource_config in resources.items():
             # 创建一行的水平布局容器 (保持不变)
             resource_row = SiDenseHContainer(self)
             resource_row.setFixedWidth(340-8)
@@ -100,7 +103,7 @@ class ExampleDeviceInfoPage(SiPage):
             setting_button.resize(48, 24)
             setting_button.attachment().setText("设置")
             setting_button.adjustSize()
-            execute_button = SiPushButton(self)
+            execute_button = SiPushButton(self) 
             execute_button.resize(48, 24)
             execute_button.attachment().setText("执行")
             execute_button.adjustSize()
@@ -117,31 +120,29 @@ class ExampleDeviceInfoPage(SiPage):
         container_v.addWidget(container_resource)
 
         # ---------------- 中间面板：操作面板 - 使用 SiScrollArea 滚动容器 ----------------
-        container_setting = SiOptionCardPlane(self)
+        container_setting = SiTriSectionPanelCard(self)
         container_setting.setTitle("操作面板")
         container_setting.setFixedHeight(388)
         container_setting.setFixedWidth(400)
-        setting_scroll_area = SiScrollArea(self)  # 创建 SiScrollArea 滚动区域
-        setting_scroll_area.setFixedWidth(340+8)
+        setting_scroll_area = SiScrollArea(self)
+        setting_scroll_area.setFixedWidth(340 + 8)
         setting_scroll_area.setFixedHeight(280)
         setting_scroll_area.adjustSize()
-        setting_scroll_content = SiDenseVContainer(self)  # 使用 SiDenseVContainer 作为 SiScrollArea 的内容
-        setting_scroll_content.setSpacing(6)  # 设置垂直间距，让资源列表更清晰
+        setting_scroll_content = SiDenseContainer(self, direction=QBoxLayout.TopToBottom)  # 明确指定垂直布局方向
+        # setting_scroll_content.setSpacing(6)  # 设置垂直间距
 
-        # 假设的设置 (保持不变)
         settings = ["阴阳师", "明日方舟", "M9A", "战双", "阴阳师", "明日方舟", "M9A", "战双", "阴阳师", "明日方舟",
-                     "M9A", "战双"]
+                    "M9A", "战双"]
         radio_setting_buttons = []
 
         for setting in settings:
-            # 创建一行的水平布局容器 (保持不变)
-            setting_row = SiDenseHContainer(self)
-            setting_row.setFixedWidth(340-8)
+            setting_row = SiDenseContainer(self)  # 每一行仍然保持水平布局
+            setting_row.setFixedWidth(340 - 8)
 
             radio_button = SiRadioButtonRefactor(self)
             radio_button.setText(setting)
             radio_button.adjustSize()
-            setting_row.addWidget(radio_button, side="left")
+            setting_row.addWidget(radio_button, side=Qt.LeftEdge)
 
             setting_button = SiPushButton(self)
             setting_button.resize(48, 24)
@@ -151,12 +152,12 @@ class ExampleDeviceInfoPage(SiPage):
             execute_button.resize(48, 24)
             execute_button.attachment().setText("执行")
             execute_button.adjustSize()
-            setting_row.addWidget(setting_button, side="right")
-            setting_row.addWidget(execute_button, side="right")
+            setting_row.addWidget(setting_button, side=Qt.RightEdge)
+            setting_row.addWidget(execute_button, side=Qt.RightEdge)
 
-            setting_scroll_content.addWidget(setting_row)  # 将每一行添加到 SiDenseVContainer 中
+            setting_scroll_content.addWidget(setting_row)  # 将水平布局的行添加到垂直布局的内容容器中
 
-        setting_scroll_area.setAttachment(setting_scroll_content)  # 设置 SiDenseVContainer 为 SiScrollArea 的滚动内容
+        setting_scroll_area.setAttachment(setting_scroll_content)
         container_setting.body().addWidget(setting_scroll_area)  # 将 SiScrollArea 添加到卡片的内容区域
 
 

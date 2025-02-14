@@ -104,116 +104,116 @@ def option_config_to_dict(option: OptionConfig) -> Dict[str, Any]:
 
 
 # Example Usage:
-
-if __name__ == "__main__":
-    config_json = """
-    {
-      "devices": [
-        {
-          "device_name": "雷电模拟器-阴阳师1",
-          "adb_config": {
-            "name": "LDPlayer",
-            "adb_path": "D:\\\\leidian\\\\LDPlayer9\\\\adb.exe",
-            "address": "127.0.0.1:5555",
-            "screencap_methods": 18446744073709551559,
-            "input_methods": 18446744073709551607,
-            "config": {}
-          },
-          "resources": [
-            {
-              "resource_name": "阴阳师",
-              "selected_tasks": [
-                "领取奖励",
-                "自动结界",
-                "日常",
-                "自动悬赏",
-                "自动地鬼",
-                "打开游戏",
-                "结界奖励领取"
-              ],
-              "options": [
-                {
-                  "option_name": "选择区服",
-                  "value": "官服"
-                },
-                {
-                  "option_name": "悬赏封印分组预设",
-                  "value": "日常"
-                },
-                {
-                  "option_name": "悬赏封印队伍预设",
-                  "value": "日常清杂"
-                }
-              ]
-            },
-            {
-              "resource_name": "明日方舟",
-              "selected_tasks": [
-                "启动加速器",
-                "领取奖励"
-              ],
-              "options": [
-                {
-                  "option_name": "选择区服",
-                  "value": "官服"
-                }
-              ]
-            }
-          ],
-          "schedule_enabled": true,
-          "start_command": "D:\\\\leidian\\\\LDPlayer9\\\\dnplayer.exe index=0"
-        },
-        {
-          "device_name": "夜神模拟器-战双",
-          "adb_config": {
-            "name": "夜神模拟器",
-            "adb_path": "C:\\\\Android\\\\adb.exe",
-            "address": "emulator-5554",
-            "screencap_methods": 18446744073709551559,
-            "input_methods": 18446744073709551607,
-            "config": {}
-          },
-          "resources": [
-            {
-              "resource_name": "战双帕弥什",
-              "selected_tasks": [
-                "打开游戏"
-              ],
-              "options": [
-                {
-                  "option_name": "打开战双",
-                  "value": "官服"
-                }
-              ]
-            }
-          ],
-          "schedule_enabled": false,
-          "start_command": ""
-        }
-      ]
-    }
-    """
-
-    config_dict = json.loads(config_json)
-    devices_config_obj = DevicesConfig.from_dict(config_dict)
-
-    print("Loaded DevicesConfig Object:")
-    print(devices_config_obj)
-
-    # Example: Accessing device and resource data
-    print("\nExample Data Access:")
-    for device in devices_config_obj.devices:
-        print(f"\nDevice Name: {device.device_name}, ADB Name: {device.adb_config.name}, Address: {device.adb_config.address}")
-        for resource in device.resources:
-            print(f"  Resource Name: {resource.resource_name}, Tasks: {resource.selected_tasks}")
-            for option in resource.options:
-                print(f"    Option Name: {option.option_name}, Value: {option.value}, Task Name: {option.task_name}")
-
-    # Example: Exporting to JSON
-    devices_config_obj.to_json_file("devices_config_dataclass.json")
-    print("\nConfiguration exported to devices_config_dataclass.json")
-
-    # Example: Loading from JSON file
-    loaded_devices_config = DevicesConfig.from_json_file("devices_config_dataclass.json")
-    print("\nLoaded from JSON File:")
-    print(loaded_devices_config)
+#
+# if __name__ == "__main__":
+#     config_json = """
+#     {
+#       "devices": [
+#         {
+#           "device_name": "雷电模拟器-阴阳师1",
+#           "adb_config": {
+#             "name": "LDPlayer",
+#             "adb_path": "D:\\\\leidian\\\\LDPlayer9\\\\adb.exe",
+#             "address": "127.0.0.1:5555",
+#             "screencap_methods": 18446744073709551559,
+#             "input_methods": 18446744073709551607,
+#             "config": {}
+#           },
+#           "resources": [
+#             {
+#               "resource_name": "阴阳师",
+#               "selected_tasks": [
+#                 "领取奖励",
+#                 "自动结界",
+#                 "日常",
+#                 "自动悬赏",
+#                 "自动地鬼",
+#                 "打开游戏",
+#                 "结界奖励领取"
+#               ],
+#               "options": [
+#                 {
+#                   "option_name": "选择区服",
+#                   "value": "官服"
+#                 },
+#                 {
+#                   "option_name": "悬赏封印分组预设",
+#                   "value": "日常"
+#                 },
+#                 {
+#                   "option_name": "悬赏封印队伍预设",
+#                   "value": "日常清杂"
+#                 }
+#               ]
+#             },
+#             {
+#               "resource_name": "明日方舟",
+#               "selected_tasks": [
+#                 "启动加速器",
+#                 "领取奖励"
+#               ],
+#               "options": [
+#                 {
+#                   "option_name": "选择区服",
+#                   "value": "官服"
+#                 }
+#               ]
+#             }
+#           ],
+#           "schedule_enabled": true,
+#           "start_command": "D:\\\\leidian\\\\LDPlayer9\\\\dnplayer.exe index=0"
+#         },
+#         {
+#           "device_name": "夜神模拟器-战双",
+#           "adb_config": {
+#             "name": "夜神模拟器",
+#             "adb_path": "C:\\\\Android\\\\adb.exe",
+#             "address": "emulator-5554",
+#             "screencap_methods": 18446744073709551559,
+#             "input_methods": 18446744073709551607,
+#             "config": {}
+#           },
+#           "resources": [
+#             {
+#               "resource_name": "战双帕弥什",
+#               "selected_tasks": [
+#                 "打开游戏"
+#               ],
+#               "options": [
+#                 {
+#                   "option_name": "打开战双",
+#                   "value": "官服"
+#                 }
+#               ]
+#             }
+#           ],
+#           "schedule_enabled": false,
+#           "start_command": ""
+#         }
+#       ]
+#     }
+#     """
+#
+#     config_dict = json.loads(config_json)
+#     devices_config_obj = DevicesConfig.from_dict(config_dict)
+#
+#     print("Loaded DevicesConfig Object:")
+#     print(devices_config_obj)
+#
+#     # Example: Accessing device and resource data
+#     print("\nExample Data Access:")
+#     for device in devices_config_obj.devices:
+#         print(f"\nDevice Name: {device.device_name}, ADB Name: {device.adb_config.name}, Address: {device.adb_config.address}")
+#         for resource in device.resources:
+#             print(f"  Resource Name: {resource.resource_name}, Tasks: {resource.selected_tasks}")
+#             for option in resource.options:
+#                 print(f"    Option Name: {option.option_name}, Value: {option.value}, Task Name: {option.task_name}")
+#
+#     # Example: Exporting to JSON
+#     devices_config_obj.to_json_file("devices_config_dataclass.json")
+#     print("\nConfiguration exported to devices_config_dataclass.json")
+#
+#     # Example: Loading from JSON file
+#     loaded_devices_config = DevicesConfig.from_json_file("devices_config_dataclass.json")
+#     print("\nLoaded from JSON File:")
+#     print(loaded_devices_config)

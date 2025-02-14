@@ -121,107 +121,107 @@ def option_to_dict(option: Option) -> Dict[str, Any]:
 
 
 # Example Usage:
-
-if __name__ == "__main__":
-    config_json = """
-    {
-      "resource_name": "阴阳师",
-      "resource_version": "1.0.0",
-      "resource_author": "Maa",
-      "resource_description": "阴阳师自动化脚本",
-      "resource_icon": "/icons/apps_icons/R.png",
-      "resource_tasks": [
-        {
-          "task_name": "打开游戏",
-          "task_entry": "打开游戏",
-          "option": [
-            "选择区服"
-          ]
-        },
-        {
-          "task_name": "自动地鬼",
-          "task_entry": "自动地鬼",
-          "option": [
-            "地鬼分组预设",
-            "地鬼队伍预设"
-          ]
-        }
-      ],
-      "options": [
-        {
-          "name": "选择区服",
-          "type": "select",
-          "default": "官服",
-          "choices": [
-            {
-              "name": "官服",
-              "value": "官服"
-            },
-            {
-              "name": "官网下载版",
-              "value": "官网下载版"
-            }
-          ],
-          "pipeline_override": {
-            "官服": {},
-            "官网下载版": {
-              "打开阴阳师": {
-                "package": "com.netease.onmyoji/.tag0"
-              }
-            }
-          }
-        },
-        {
-          "name": "是否启动自动轮换",
-          "type": "boole",
-          "default": false,
-          "pipeline_override": {
-            "探索_悬赏_自动轮换": {
-              "enabled": "{boole}"
-            }
-          }
-        },
-        {
-          "name": "悬赏封印分组预设",
-          "type": "input",
-          "default": "默认分组",
-          "pipeline_override": {
-            "装备日常清杂预设": {
-              "custom_action_param": {
-                "group_name": "{value}"
-              }
-            }
-          }
-        }
-      ]
-    }
-    """
-
-    config_dict = json.loads(config_json)
-    config_obj = ResourceConfig.from_dict(config_dict)
-
-    print("Loaded ResourceConfig Object (Simplified and PipelineOverride Simplified Further):")
-    print(config_obj)
-
-    # Example: Accessing task and option data (same as before)
-    print("\nExample Data Access:")
-    for task in config_obj.resource_tasks:
-        print(f"Task Name: {task.task_name}, Entry: {task.task_entry}, Options: {task.option}")
-
-    for option in config_obj.options:
-        print(f"\nOption Name: {option.name}, Type: {option.type}, Default: {option.default}")
-        if isinstance(option, SelectOption):
-            print("  Choices:")
-            for choice in option.choices:
-                print(f"    - Name: {choice.name}, Value: {choice.value}")
-        if option.pipeline_override:
-             print(f"  Pipeline Override: {option.pipeline_override}")
-
-    # Example: Exporting to JSON (same as before)
-    config_obj.to_json_file("yys_config_dataclass_simplified_pipelineoverride_further_simplified.json")
-    print("\nConfiguration exported to yys_config_dataclass_simplified_pipelineoverride_further_simplified.json")
-
-    # Example: Loading from JSON file (same as before)
-    loaded_config = ResourceConfig.from_json_file("yys_config_dataclass_simplified_pipelineoverride_further_simplified.json")
-    print("\nLoaded from JSON File:")
-    print(loaded_config)
+#
+# if __name__ == "__main__":
+#     config_json = """
+#     {
+#       "resource_name": "阴阳师",
+#       "resource_version": "1.0.0",
+#       "resource_author": "Maa",
+#       "resource_description": "阴阳师自动化脚本",
+#       "resource_icon": "/icons/apps_icons/R.png",
+#       "resource_tasks": [
+#         {
+#           "task_name": "打开游戏",
+#           "task_entry": "打开游戏",
+#           "option": [
+#             "选择区服"
+#           ]
+#         },
+#         {
+#           "task_name": "自动地鬼",
+#           "task_entry": "自动地鬼",
+#           "option": [
+#             "地鬼分组预设",
+#             "地鬼队伍预设"
+#           ]
+#         }
+#       ],
+#       "options": [
+#         {
+#           "name": "选择区服",
+#           "type": "select",
+#           "default": "官服",
+#           "choices": [
+#             {
+#               "name": "官服",
+#               "value": "官服"
+#             },
+#             {
+#               "name": "官网下载版",
+#               "value": "官网下载版"
+#             }
+#           ],
+#           "pipeline_override": {
+#             "官服": {},
+#             "官网下载版": {
+#               "打开阴阳师": {
+#                 "package": "com.netease.onmyoji/.tag0"
+#               }
+#             }
+#           }
+#         },
+#         {
+#           "name": "是否启动自动轮换",
+#           "type": "boole",
+#           "default": false,
+#           "pipeline_override": {
+#             "探索_悬赏_自动轮换": {
+#               "enabled": "{boole}"
+#             }
+#           }
+#         },
+#         {
+#           "name": "悬赏封印分组预设",
+#           "type": "input",
+#           "default": "默认分组",
+#           "pipeline_override": {
+#             "装备日常清杂预设": {
+#               "custom_action_param": {
+#                 "group_name": "{value}"
+#               }
+#             }
+#           }
+#         }
+#       ]
+#     }
+#     """
+#
+#     config_dict = json.loads(config_json)
+#     config_obj = ResourceConfig.from_dict(config_dict)
+#
+#     print("Loaded ResourceConfig Object (Simplified and PipelineOverride Simplified Further):")
+#     print(config_obj)
+#
+#     # Example: Accessing task and option data (same as before)
+#     print("\nExample Data Access:")
+#     for task in config_obj.resource_tasks:
+#         print(f"Task Name: {task.task_name}, Entry: {task.task_entry}, Options: {task.option}")
+#
+#     for option in config_obj.options:
+#         print(f"\nOption Name: {option.name}, Type: {option.type}, Default: {option.default}")
+#         if isinstance(option, SelectOption):
+#             print("  Choices:")
+#             for choice in option.choices:
+#                 print(f"    - Name: {choice.name}, Value: {choice.value}")
+#         if option.pipeline_override:
+#              print(f"  Pipeline Override: {option.pipeline_override}")
+#
+#     # Example: Exporting to JSON (same as before)
+#     config_obj.to_json_file("yys_config_dataclass_simplified_pipelineoverride_further_simplified.json")
+#     print("\nConfiguration exported to yys_config_dataclass_simplified_pipelineoverride_further_simplified.json")
+#
+#     # Example: Loading from JSON file (same as before)
+#     loaded_config = ResourceConfig.from_json_file("yys_config_dataclass_simplified_pipelineoverride_further_simplified.json")
+#     print("\nLoaded from JSON File:")
+#     print(loaded_config)

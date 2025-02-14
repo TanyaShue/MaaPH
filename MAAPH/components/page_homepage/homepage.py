@@ -2,6 +2,8 @@ from PyQt5.QtCore import Qt
 from maa.toolkit import Toolkit
 
 from MAAPH.components.page_dialog.components.add_device_page import AddDevicePage
+from MAAPH.control.config.device_config import DevicesConfig
+from MAAPH.control.config.global_config import GlobalConfig
 from MAAPH.control.tasker_service_manager import TaskerServiceManager
 from siui.components import SiPixLabel
 from siui.components.container import SiDenseContainer
@@ -77,11 +79,11 @@ class Homepage(SiPage):
         self.devices_container = SiDenseContainer(self)
         self.devices_container.setFixedHeight(180)
 
-        # 示例设备卡片（后续可动态生成）
-        device_card_1 = ADBDeviceCard(device_name="Device 1",config="{}", status="Connected", parent=self)
-        self.devices_container.addWidget(device_card_1)
-        # device_card_2 = ADBDeviceCard(device_name="Device 2",config="{}", status="Connected", parent=self)
-        # self.devices_container.addWidget(device_card_2)
+
+        for device in GlobalConfig().devices_config.devices:
+            device_card = ADBDeviceCard(device_name=device.device_name,config=device.adb_config, parent=self)
+            self.devices_container.addWidget(device_card)
+
 
         # ------------------ 底部按钮区域 ------------------
         self.bottom_area = SiDenseVContainer(self)
