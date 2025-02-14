@@ -1,13 +1,13 @@
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QDesktopWidget
 
-import icons
 import siui
+from MAAPH.icons import parser as icons
 from MAAPH.components.page_appmarket.app_market_page import AppMarketPage
 from MAAPH.components.page_device_info_page.page_device_info_page import ExampleDeviceInfoPage
 from MAAPH.components.page_homepage.homepage import Homepage
 from MAAPH.control.tasker_service_manager import TaskerServiceManager
-from components.page_about import About
+from MAAPH.components.page_about import About
 from siui.core import SiColor, SiGlobal
 from siui.templates.application.application import SiliconApplication
 

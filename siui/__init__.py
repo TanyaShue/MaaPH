@@ -1,6 +1,3 @@
-
-
-import siui
 import siui.components as components
 import siui.components.widgets as widgets
 import siui.core as core

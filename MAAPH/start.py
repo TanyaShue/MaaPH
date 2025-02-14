@@ -4,7 +4,7 @@ from PyQt5.QtCore import QTimer
 from PyQt5.QtWidgets import QApplication
 
 from siui.core import SiGlobal
-from ui import MySiliconApp
+from MAAPH.ui import MySiliconApp
 
 
 def show_version_message(window):
