@@ -137,6 +137,12 @@ class ExampleDeviceInfoPage(SiPage):
         setting_scroll_area.setFixedHeight(280)
         setting_scroll_content = SiDenseContainer(self) #  注意这里没有使用 self.setting_scroll_content
 
+        #  新增:  创建默认标签并添加到 setting_scroll_content 中
+        default_label = SiLabel(self)
+        default_label.setText("请在左侧资源选择面板选择资源并设置") # 设置默认标签的文本
+        setting_scroll_content.addWidget(default_label,side=Qt.TopEdge) # 将默认标签添加到操作面板的内容容器中
+
+
         #  将 setting_scroll_area 和 setting_scroll_content 存储到 container_h (设备容器) 上
         container_h.setting_scroll_area = setting_scroll_area
         container_h.setting_scroll_content = setting_scroll_content
@@ -214,6 +220,9 @@ class ExampleDeviceInfoPage(SiPage):
                 radio_button = SiRadioButtonRefactor(self)
                 radio_button.setText(setting.task_name)  # 假设 setting 对象有 task_name 属性
                 radio_button.adjustSize()
+                # 正确的信号连接方式
+                # radio_button.clicked.connect(self.aa)  # 传递函数引用，而不是调用
+
                 setting_row.addWidget(radio_button, side=Qt.LeftEdge)
 
                 setting_button_setting = SiPushButtonRefactor(self)  # 为了避免变量名冲突，修改变量名
@@ -238,3 +247,5 @@ class ExampleDeviceInfoPage(SiPage):
 
         # 3.  关键步骤：使用 **device_container**  的 setting_scroll_area 和 setting_scroll_content
         device_container.setting_scroll_area.setWidget(new_setting_scroll_content) #  使用 device_container  的 setting_scroll_area
+    def aa(self):
+        print("aaa")

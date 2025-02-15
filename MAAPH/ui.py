@@ -1,5 +1,5 @@
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QDesktopWidget
+from PyQt5.QtWidgets import QDesktopWidget, QSystemTrayIcon
 
 import siui
 from MAAPH.icons import parser as icons
@@ -47,3 +47,12 @@ class MySiliconApp(SiliconApplication):
         self.layerMain().setPage(0)
 
         SiGlobal.siui.reloadAllWindowsStyleSheet()
+    # def closeEvent(self, event):
+    #     # 关闭窗口时最小化到托盘而不是退出
+    #     event.ignore()
+    #     self.hide()
+    #     self.tray_icon.showMessage("MyApp", "Application is running in background.", QSystemTrayIcon.Information, 2000)
+    #
+    # def show_window(self):
+    #     # 恢复窗口显示
+    #     self.show()
