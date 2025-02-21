@@ -10,8 +10,8 @@ from siui.components.combobox import SiComboBox
 from siui.components.page import SiPage
 from siui.components.spinbox.spinbox import SiDoubleSpinBox
 from siui.core import SiGlobal
-from .components.child_page_example import ChildPageExample, ChildPageExample2
-from .components.modal_dialog_example import ModalDialogExample
+# from .components.child_page_example import ChildPageExample, ChildPageExample2
+# from .components.modal_dialog_example import ModalDialogExample
 from .components.side_msg_box import send_custom_message, send_simple_message, send_titled_message
 from ..option_card import OptionCardPlaneForWidgetDemos
 

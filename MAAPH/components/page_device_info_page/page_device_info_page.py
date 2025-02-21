@@ -1,5 +1,7 @@
 from PyQt5.QtCore import Qt, QObject
 from PyQt5.QtWidgets import QBoxLayout
+
+from MAAPH.components.page_dialog.components.page_task_setting import TaskSettingPage
 from siui.components.slider_ import SiScrollAreaRefactor
 
 from siui.components.container import SiDenseContainer, SiTriSectionPanelCard
@@ -44,6 +46,7 @@ class ExampleDeviceInfoPage(SiPage):
             self.titled_widget_group.addWidget(device_container)
             # 添加间隔让页面布局更美观 (保持不变)
             self.titled_widget_group.addPlaceholder(12)
+
 
         # 将 TitledWidgetGroup 作为页面的主体附件 (保持不变)
         self.setAttachment(self.titled_widget_group)
@@ -117,6 +120,10 @@ class ExampleDeviceInfoPage(SiPage):
             resource_row.addWidget(execute_button, side="right")
 
             resource_scroll_content.addWidget(resource_row)  # 将每一行添加到 SiDenseVContainer 中
+        start_button=SiPushButtonRefactor(self)
+        start_button.setText("一键启动")
+        start_button.adjustSize()
+        container_resource.footer().addWidget(start_button,side="right")
 
         resource_scroll_area.setAttachment(resource_scroll_content)  # 设置 SiDenseVContainer 为 SiScrollArea 的滚动内容
         container_resource.body().addWidget(resource_scroll_area)  # 将 SiScrollArea 添加到卡片的内容区域
@@ -199,11 +206,11 @@ class ExampleDeviceInfoPage(SiPage):
 
         return container_h
 
-    def update_operation_panel(self, resource_name, device_container): #  修改 update_operation_panel 接收 device_container 参数
+    def update_operation_panel(self, resource_name, device_container):
         """
         根据选择的资源名称，更新操作面板的内容。
         """
-        print(f"更新操作面板，资源名称: {resource_name}, 设备容器: {device_container}")  # 调试信息
+        # print(f"更新操作面板，资源名称: {resource_name}, 设备容器: {device_container}")  # 调试信息
 
         # 1. 创建一个新的 SiDenseContainer 用于存放新的设置项
         new_setting_scroll_content = SiDenseContainer(self, direction=QBoxLayout.TopToBottom)  # 创建新的内容容器
@@ -228,6 +235,12 @@ class ExampleDeviceInfoPage(SiPage):
                 setting_button_setting = SiPushButtonRefactor(self)  # 为了避免变量名冲突，修改变量名
                 setting_button_setting.resize(48, 24)
                 setting_button_setting.setText("设置")
+                setting_button_setting.clicked.connect(
+                    lambda checked, entry=setting.task_entry: SiGlobal.siui.windows[
+                        "MAIN_WINDOW"].layerChildPage().setChildPage(
+                        TaskSettingPage(self, resource_config=resource_config, entry_name=entry)
+                    )
+                )
                 setting_button_setting.adjustSize()
                 execute_button = SiPushButtonRefactor(self)
                 execute_button.resize(48, 24)
@@ -247,5 +260,6 @@ class ExampleDeviceInfoPage(SiPage):
 
         # 3.  关键步骤：使用 **device_container**  的 setting_scroll_area 和 setting_scroll_content
         device_container.setting_scroll_area.setWidget(new_setting_scroll_content) #  使用 device_container  的 setting_scroll_area
+
     def aa(self):
         print("aaa")
